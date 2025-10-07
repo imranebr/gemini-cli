@@ -44,6 +44,13 @@ export const ShellInputPrompt: React.FC<ShellInputPromptProps> = ({
       }
 
       const ansiSequence = keyToAnsi(key);
+
+      // This is a workaround for an issue where some terminals respond to a
+      // control sequence with "1;2c", which can get displayed in the input.
+      if (ansiSequence === '\x1b[1;2c') {
+        return;
+      }
+
       if (ansiSequence) {
         handleShellInputSubmit(ansiSequence);
       }
