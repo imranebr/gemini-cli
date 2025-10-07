@@ -348,4 +348,42 @@ describe('mcp add command', () => {
       );
     });
   });
+
+  it('should handle comma-separated lists for --include-tools and --exclude-tools', async () => {
+    await parser.parseAsync(
+      'add my-server /path/to/server --include-tools tool1,tool2 --exclude-tools tool3,tool4',
+    );
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      SettingScope.Workspace,
+      'mcpServers',
+      {
+        'my-server': {
+          command: '/path/to/server',
+          args: [],
+          includeTools: ['tool1', 'tool2'],
+          excludeTools: ['tool3', 'tool4'],
+        },
+      },
+    );
+  });
+
+  it('should handle mixed comma- and space-separated lists for --include-tools and --exclude-tools', async () => {
+    await parser.parseAsync(
+      'add my-server /path/to/server --include-tools tool1,tool2 tool3 --exclude-tools tool4,tool5 tool6',
+    );
+
+    expect(mockSetValue).toHaveBeenCalledWith(
+      SettingScope.Workspace,
+      'mcpServers',
+      {
+        'my-server': {
+          command: '/path/to/server',
+          args: [],
+          includeTools: ['tool1', 'tool2', 'tool3'],
+          excludeTools: ['tool4', 'tool5', 'tool6'],
+        },
+      },
+    );
+  });
 });
