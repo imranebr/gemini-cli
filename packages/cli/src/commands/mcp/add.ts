@@ -37,6 +37,9 @@ async function addMcpServer(
     excludeTools,
   } = options;
 
+  const finalIncludeTools = includeTools?.flatMap((item) => item.split(','));
+  const finalExcludeTools = excludeTools?.flatMap((item) => item.split(','));
+
   const settings = loadSettings(process.cwd());
   const inHome = settings.workspace.path === settings.user.path;
 
@@ -72,8 +75,8 @@ async function addMcpServer(
         timeout,
         trust,
         description,
-        includeTools,
-        excludeTools,
+        includeTools: finalIncludeTools,
+        excludeTools: finalExcludeTools,
       };
       break;
     case 'http':
@@ -83,8 +86,8 @@ async function addMcpServer(
         timeout,
         trust,
         description,
-        includeTools,
-        excludeTools,
+        includeTools: finalIncludeTools,
+        excludeTools: finalExcludeTools,
       };
       break;
     case 'stdio':
@@ -105,8 +108,8 @@ async function addMcpServer(
         timeout,
         trust,
         description,
-        includeTools,
-        excludeTools,
+        includeTools: finalIncludeTools,
+        excludeTools: finalExcludeTools,
       };
       break;
   }
